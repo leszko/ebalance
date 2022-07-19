@@ -33,33 +33,33 @@ export default function Home() {
                 <th>Description</th>
               </tr>
               <tr>
-                <td>${data[0].date}</td>
-                <td>${data[0].ethBalance}</td>
+                <td>{data[0].date}</td>
+                <td>{data[0].ethBalance}</td>
                 <td></td>
               </tr>
               <tr>
-                <td>${data[1].date}</td>
-                <td>${data[1].ethBalance}</td>
+                <td>{data[1].date}</td>
+                <td>{data[1].ethBalance}</td>
                 <td></td>
               </tr>
               <tr>
-                <td>${data[2].date}</td>
-                <td>${data[2].ethBalance}</td>
+                <td>{data[2].date}</td>
+                <td>{data[2].ethBalance}</td>
                 <td></td>
               </tr>
               <tr>
-                <td>${data[3].date}</td>
-                <td>${data[3].ethBalance}</td>
+                <td>{data[3].date}</td>
+                <td>{data[3].ethBalance}</td>
                 <td></td>
               </tr>
               <tr>
-                <td>${data[4].date}</td>
-                <td>${data[4].ethBalance}</td>
+                <td>{data[4].date}</td>
+                <td>{data[4].ethBalance}</td>
                 <td></td>
               </tr>
               <tr>
-                <td>${data[5].date}</td>
-                <td>${data[5].ethBalance}</td>
+                <td>{data[5].date}</td>
+                <td>{data[5].ethBalance}</td>
                 <td></td>
               </tr>
               

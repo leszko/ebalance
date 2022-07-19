@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   const balanceEntity = new Balance({
     token: "ETH",
     address: address,
-    balance: balance,
+    balance: weiBalance,
     timestamp: Date.now(),
   });
   await balanceEntity.save();

@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
-const Balance = require('../db/balance.js')
+const Balance = require("../db/balance.js");
 
 export default async function handler(req, res) {
+  const { address } = req.query;
   const result = await Balance.aggregate([
+    {
+      $match: {
+        address: `${address}`,
+      },
+    },
     {
       $project: {
         yearMonthDay: {
@@ -26,9 +32,8 @@ export default async function handler(req, res) {
       $project: {
         date: "$_id",
         avgGwei: "$avgGwei",
-      }
-    }
+      },
+    },
   ]);
-  const { address } = req.query;
   res.send(result);
 }

@@ -4,15 +4,17 @@ const http = require("http");
 const apiUrl =   process.env.API_URL ? process.env.API_URL : "http://localhost:3000";
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${apiUrl}/api/balances/1234`);
+  const address = context.query.address;
+  if (!address) {
+    return { props: {}};
+  }
+  const res = await fetch(`${apiUrl}/api/balances/${address}`);
   const data = await res.json();
 
   return { props: { data } };
 }
 
 export default function Main({data}) {
-  console.log(data);
-
   return (
     <div>
       <Head>

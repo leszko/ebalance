@@ -1,8 +1,10 @@
 import Head from "next/head";
 const http = require("http");
 
+const apiUrl =   process.env.API_URL ? process.env.API_URL : "http://localhost:3000";
+
 export async function getServerSideProps(context) {
-  const res = await fetch("http://localhost:3000/api/balances/1234");
+  const res = await fetch(`${apiUrl}/api/balances/1234`);
   const data = await res.json();
 
   return { props: { data } };

@@ -1,5 +1,5 @@
 const ethers = require("ethers");
-const Balance = require('../db/balance.js')
+const Balance = require('./db/balance.js')
 
 // Configure connection to ETH RPC
 const provider = new ethers.providers.JsonRpcProvider(

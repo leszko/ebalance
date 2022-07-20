@@ -1,16 +1,5 @@
 const mongoose = require("mongoose");
-
-mongoose.connect(
-  process.env.MONGO_URL
-    ? process.env.MONGO_URL
-    : "mongodb://localhost:27017/test"
-);
-const Balance = mongoose.model("Balance", {
-  token: String,
-  address: String,
-  balance: String,
-  timestamp: Date,
-});
+const Balance = require('../db/balance.js')
 
 export default async function handler(req, res) {
   const result = await Balance.aggregate([

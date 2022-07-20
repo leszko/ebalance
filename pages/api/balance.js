@@ -1,19 +1,10 @@
 const ethers = require("ethers");
-const mongoose = require("mongoose");
+const Balance = require('../db/balance.js')
 
 // Configure connection to ETH RPC
 const provider = new ethers.providers.JsonRpcProvider(
   "https://arb1.arbitrum.io/rpc"
 );
-
-// Configure connection to DB
-mongoose.connect(process.env.MONGO_URL ? process.env.MONGO_URL : "mongodb://localhost:27017/test");
-const Balance = mongoose.model("Balance", {
-  token: String,
-  address: String,
-  balance: String,
-  timestamp: Date,
-});
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

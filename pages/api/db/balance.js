@@ -6,10 +6,12 @@ mongoose.connect(
     : "mongodb://localhost:27017/test"
 );
 const Balance = mongoose.model("Balance", {
-  token: String,
   address: String,
-  balance: String,
   timestamp: Date,
+  tokens: {
+    type: Map,
+    of: String
+  }
 });
 
 module.exports = Balance;

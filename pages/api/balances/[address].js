@@ -3,7 +3,7 @@ const Balance = require("../db/balance.js");
 
 export default async function handler(req, res) {
   const { address, lastN } = req.query;
-  const limit = lastN ? lastN : 10
+  const limit = lastN ? lastN : 10;
   const result = await Balance.aggregate([
     {
       $match: {
@@ -15,14 +15,18 @@ export default async function handler(req, res) {
         yearMonthDay: {
           $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
         },
-        gwei: { $divide: [{ $toLong: "$balance" }, 1000000000] },
+        eth: "$tokens.ETH",
+        lpt: "$tokens.lLPT",
       },
     },
     {
       $group: {
         _id: "$yearMonthDay",
-        avgGwei: {
-          $avg: "$gwei",
+        avgEth: {
+          $avg: { $divide: [{ $toDouble: "$eth" }, 1000000000] },
+        },
+        avgLpt: {
+          $avg: { $divide: [{ $toDouble: "$lpt" }, 1000000000] },
         },
       },
     },
@@ -32,11 +36,12 @@ export default async function handler(req, res) {
     {
       $project: {
         date: "$_id",
-        avgGwei: "$avgGwei",
+        avgEth: "$avgEth",
+        avgLpt: "$avgLpt",
       },
     },
     {
-        $limit : limit,
+      $limit: limit,
     },
   ]);
   res.send(result);

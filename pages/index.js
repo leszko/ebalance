@@ -18,7 +18,7 @@ export async function getServerSideProps(context) {
   const balances = await fetch(`${apiUrl}/api/balances/${address}`);
   const data = await balances.json();
   const result = data.map((b) => {
-    return { date: b.date, avgGwei: formatGwei(b.avgGwei) };
+    return { date: b.date, avgEth: formatGwei(b.avgEth), avgLpt: formatGwei(b.avgLpt)  };
   });
 
   return { props: { data: result } };
@@ -38,13 +38,13 @@ export default function Main({ data }) {
               <tr>
                 <th>Date</th>
                 <th>ETH</th>
-                <th>Description</th>
+                <th>LPT</th>
               </tr>
               {data.map((d, index) => (
                 <tr key="{d.date}">
                   <td>{d.date}</td>
-                  <td>{d.avgGwei}</td>
-                  <td></td>
+                  <td>{d.avgEth}</td>
+                  <td>{d.avgLpt}</td>
                 </tr>
               ))}
             </tbody>

@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Balance = require("../db/balance.js");
 
 export default async function handler(req, res) {
-  const { address } = req.query;
+  const { address, lastN } = req.query;
+  const limit = lastN ? lastN : 10
   const result = await Balance.aggregate([
     {
       $match: {
@@ -14,7 +15,7 @@ export default async function handler(req, res) {
         yearMonthDay: {
           $dateToString: { format: "%Y-%m-%d", date: "$timestamp" },
         },
-        gwei: { $divide: [{ $toLong: "$balance" }, 1000000] },
+        gwei: { $divide: [{ $toLong: "$balance" }, 1000000000] },
       },
     },
     {
@@ -26,13 +27,16 @@ export default async function handler(req, res) {
       },
     },
     {
-      $sort: { _id: 1 },
+      $sort: { _id: -1 },
     },
     {
       $project: {
         date: "$_id",
         avgGwei: "$avgGwei",
       },
+    },
+    {
+        $limit : limit,
     },
   ]);
   res.send(result);

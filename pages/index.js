@@ -1,6 +1,11 @@
 import Head from "next/head";
 const http = require("http");
 
+function formatGwei(gwei) {
+    const eth = gwei / 1000000000;
+    return eth.toFixed(6);
+}
+
 const apiUrl =   process.env.API_URL ? process.env.API_URL : "http://localhost:3000";
 
 export async function getServerSideProps(context) {
@@ -8,10 +13,12 @@ export async function getServerSideProps(context) {
   if (!address) {
     return { props: {}};
   }
-  const res = await fetch(`${apiUrl}/api/balances/${address}`);
-  const data = await res.json();
+  const balances = await fetch(`${apiUrl}/api/balances/${address}`);
+  const data = await balances.json();
+  const result = data.map(b => {return {date: b.date, avgGwei: formatGwei(b.avgGwei)}})
 
-  return { props: { data } };
+
+  return { props: { data: result } };
 }
 
 export default function Main({data}) {

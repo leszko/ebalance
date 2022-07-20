@@ -17,6 +17,7 @@ export default async function handler(req, res) {
         },
         eth: "$tokens.ETH",
         lpt: "$tokens.lLPT",
+        leth: "$tokens.lETH",
       },
     },
     {
@@ -28,6 +29,9 @@ export default async function handler(req, res) {
         avgLpt: {
           $avg: { $divide: [{ $toDouble: "$lpt" }, 1000000000] },
         },
+        avglEth: {
+          $avg: { $divide: [{ $toDouble: "$leth" }, 1000000000] },
+        },
       },
     },
     {
@@ -38,6 +42,7 @@ export default async function handler(req, res) {
         date: "$_id",
         avgEth: "$avgEth",
         avgLpt: "$avgLpt",
+        avglEth: "$avglEth",
       },
     },
     {

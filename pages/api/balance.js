@@ -42,15 +42,24 @@ export default async function handler(req, res) {
   );
   const uLpt = delegator.delegatedAmount.toString();
 
+  // Get fees in the Livepeer contract
+  const transcoder = await bondingManagerContract.functions.getTranscoder(
+    address
+  );
+  const round = transcoder.lastActiveStakeUpdateRound;
+  const transcoderEarnings = await bondingManagerContract.functions.pendingFees(address, round);
+  const fees = transcoderEarnings.toString();
+
   const balanceEntity = new Balance({
     address: address,
     timestamp: Date.now(),
-    tokens: { ETH: weiBalance, lLPT: uLpt },
+    tokens: { ETH: weiBalance, lLPT: uLpt, lETH: fees, },
   });
   await balanceEntity.save();
 
   res.send({
     ETH: ethers.utils.formatEther(weiBalance),
     lLPT: ethers.utils.formatEther(uLpt),
+    lETH: ethers.utils.formatEther(fees)
   });
 }

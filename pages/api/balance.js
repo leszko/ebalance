@@ -8,9 +8,8 @@ const provider = new ethers.providers.JsonRpcProvider(
 );
 const bondingManagerContractAddress =
   "0x35Bcf3c30594191d53231E4FF333E8A770453e40";
-const bondingManagerContractAbi = fs
-  .readFileSync("abis/BondingManager.json")
-  .toString();
+
+const bondingManagerContractAbi = require("./abis/BondingManager.js");
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

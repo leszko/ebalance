@@ -5,13 +5,17 @@ mongoose.connect(
     ? process.env.MONGO_URL
     : "mongodb://localhost:27017/test"
 );
-const Balance = mongoose.model("Balance", {
+
+const balanceSchema = new mongoose.Schema({
   address: String,
   timestamp: Date,
   tokens: {
     type: Map,
     of: String
   }
+}, {timestamps: true
 });
 
-module.exports = Balance;
+const balance = mongoose.model("Balance", balanceSchema);
+
+module.exports = balance;

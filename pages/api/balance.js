@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     res.status(400).send({ message: "Invalid parameters" });
     return;
   }
-  asyncCall = req.body.async;
+  const asyncCall = req.body.async;
   if (asyncCall) {
     res.send("")
   }

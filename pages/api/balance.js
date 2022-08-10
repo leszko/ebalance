@@ -25,6 +25,10 @@ export default async function handler(req, res) {
     res.status(400).send({ message: "Invalid parameters" });
     return;
   }
+  asyncCall = req.body.async;
+  if (asyncCall) {
+    res.send("")
+  }
 
   // Get ETH Balance
   const balance = await provider.getBalance(address);
@@ -56,9 +60,11 @@ export default async function handler(req, res) {
   });
   await balanceEntity.save();
 
-  res.send({
-    ETH: ethers.utils.formatEther(weiBalance),
-    lLPT: ethers.utils.formatEther(uLpt),
-    lETH: ethers.utils.formatEther(fees)
-  });
+  if (!asyncCall) {
+    res.send({
+      ETH: ethers.utils.formatEther(weiBalance),
+      lLPT: ethers.utils.formatEther(uLpt),
+      lETH: ethers.utils.formatEther(fees)
+    });
+  }
 }

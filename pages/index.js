@@ -40,7 +40,6 @@ export async function getServerSideProps(context) {
       profit: profitEth + profitLpt
     })
   }
-  console.log(profits)
 
   return { props: { data: {
     result: result,

@@ -15,7 +15,7 @@ export async function getServerSideProps(context) {
   if (!address) {
     return { props: {} };
   }
-  const balances = await fetch(`${apiUrl}/api/balances/${address}`);
+  const balances = await fetch(`${apiUrl}/api/balances/${address}?lastN=20`);
   const data = await balances.json();
   const result = data.map((b) => {
     return { date: b.date, avgEth: formatGwei(b.avgEth), avgLpt: formatGwei(b.avgLpt), avglEth: formatGwei(b.avglEth), sumEth: formatGwei(b.avgEth + b.avglEth) };

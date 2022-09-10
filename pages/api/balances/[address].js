@@ -3,7 +3,7 @@ const Balance = require("../db/balance.js");
 
 export default async function handler(req, res) {
   const { address, lastN } = req.query;
-  const limit = lastN ? lastN : 10;
+  const limit = lastN ? Number(lastN) : 10;
   const result = await Balance.aggregate([
     {
       $match: {

@@ -15,13 +15,37 @@ export async function getServerSideProps(context) {
   if (!address) {
     return { props: {} };
   }
-  const balances = await fetch(`${apiUrl}/api/balances/${address}?lastN=20`);
-  const data = await balances.json();
-  const result = data.map((b) => {
+  const balancesPromise = fetch(`${apiUrl}/api/balances/${address}?lastN=21`).then((r) => {
+    return r.json()
+  });
+
+  const exchangeRatesPromise = fetch('https://api.coingecko.com/api/v3/simple/price?ids=livepeer%2Cethereum&vs_currencies=usd').then((r) => {
+    return r.json()
+  })
+
+  const balances = await balancesPromise;
+  const exchangeRates = await exchangeRatesPromise;
+
+  const result = balances.map((b) => {
     return { date: b.date, avgEth: formatGwei(b.avgEth), avgLpt: formatGwei(b.avgLpt), avglEth: formatGwei(b.avglEth), sumEth: formatGwei(b.avgEth + b.avglEth) };
   });
 
-  return { props: { data: result } };
+  const profitForDays = [1, 7, balances.length - 1]
+  const profits = []
+  for (const d of profitForDays) {
+    const profitEth = (result[0].sumEth - result[d].sumEth) * exchangeRates.ethereum.usd
+    const profitLpt = (result[0].avgLpt - result[d].avgLpt) * exchangeRates.livepeer.usd
+    profits.push({
+      days: d,
+      profit: profitEth + profitLpt
+    })
+  }
+  console.log(profits)
+
+  return { props: { data: {
+    result: result,
+    profits: profits
+  }}};
 }
 
 export default function Main({ data }) {
@@ -42,7 +66,7 @@ export default function Main({ data }) {
                 <th>sum ETH</th>
                 <th>LPT</th>
               </tr>
-              {data.map((d, index) => (
+              {data.result.map((d, index) => (
                 <tr key="{d.date}">
                   <td>{d.date}</td>
                   <td>{d.avgEth}</td>
@@ -53,6 +77,11 @@ export default function Main({ data }) {
               ))}
             </tbody>
           </table>
+        </div>
+        <div>
+          {data.profits.map((d, index) => (
+            <p>Your profit for last <b>{d.days}</b> day(s) is <b>${d.profit.toFixed(2)}</b></p>
+          ))}
         </div>
       </main>
     </div>

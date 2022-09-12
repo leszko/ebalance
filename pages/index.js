@@ -50,6 +50,18 @@ export async function getServerSideProps(context) {
 export default function Main({ data }) {
   return (
     <div>
+      <style>{`
+        table {
+          border: 1px solid black;
+        }
+        th, td {
+          border: 1px solid black;
+          padding-left: 15px;
+          padding-right: 15px;
+          text-align: center;
+        }
+      `}
+      </style>
       <Head>
         <title>eBalance</title>
       </Head>
